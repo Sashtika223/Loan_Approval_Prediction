@@ -1,27 +1,22 @@
-# Loan Approval Prediction System 🏦
+# Loan Approval Prediction System 🚀
 
-A full-stack, machine-learning-powered application designed to predict home loan eligibility based on personal and financial data. The system features a modern, premium Glassmorphism UI and a robust backend ensemble of ML models.
+A high-performance full-stack web application that predicts loan eligibility using a **Stacked Ensemble Machine Learning model**. The system analyzes financial and personal data to provide real-time risk assessment for home loans.
 
-## 🚀 Key Features
-- **Stacked Ensemble ML Model**: Utilizes multiple models (Base Models -> Meta-Model) for high-accuracy risk prediction.
-- **Intelligent Reasoning**: Provides detailed explanations for why a loan was classified as "High Risk" or "Low Risk".
-- **Business Safeguards**: Hardcoded financial guardrails (e.g., automatic rejection for 0 income) to complement ML logic.
-- **Premium UI/UX**: Built with React and Vanilla CSS, featuring dynamic background effects and a responsive glassmorphism design.
-- **Secure Simulation**: Includes a mock authentication system for multi-user simulation.
+## ✨ Features
+- **Smart Prediction**: Utilizes a meta-model stacking technique with three base models for higher accuracy.
+- **Financial Guardrails**: Built-in business rules to prevent illogical approvals (e.g., zero income rejections).
+- **Premium UI**: Modern, responsive dashboard with glassmorphism aesthetics and smooth animations.
+- **Secure Authentication**: Local session management for user registration and login.
+- **Dynamic Reasoning**: Provides detailed explanations for every "Low Risk" or "High Risk" decision based on LTV (Loan-to-Value) and DTI (Debt-to-Income) ratios.
 
 ## 🛠️ Technology Stack
-- **Frontend**: React.js, Vite
-- **Backend**: Python, Flask, Flask-CORS
-- **Machine Learning**: Scikit-learn, Pandas, Joblib
-- **Styling**: Vanilla CSS (Custom Design System)
+- **Frontend**: React (Vite), Vanilla CSS3, Lucide Icons.
+- **Backend**: Python, Flask, Flask-CORS.
+- **Machine Learning**: Scikit-learn, Pandas, Joblib (Stacked Ensemble Model).
 
-## 📦 Project Structure
-- `/frontend`: React application (Vite-based)
-- `/backend`: Flask API server and ML models (`.pkl` files)
+## 🚀 Getting Started
 
-## ⚙️ How to Run
-
-### 1. Backend Setup (Flask)
+### 1. Backend Setup
 ```bash
 cd backend
 pip install -r requirements.txt
@@ -29,7 +24,7 @@ python app.py
 ```
 *Backend runs on `http://localhost:8000`*
 
-### 2. Frontend Setup (React)
+### 2. Frontend Setup
 ```bash
 cd frontend
 npm install
@@ -37,19 +32,15 @@ npm run dev
 ```
 *Frontend runs on `http://localhost:5173`*
 
-## 📊 Expected Output & Logic
+## 📊 Sample Output & Risk Logic
+The system evaluates applications based on key financial vectors:
+- **Low Risk**: Usually assigned when Credit History is Good (1.0), LTV is ≤ 80%, and monthly EMI is ≤ 45% of income.
+- **High Risk**: Triggered by poor credit history, insufficient collateral, or high debt-to-income ratios.
+- **Automatic Rejection**: Applications with zero declared income are automatically flagged as High Risk to ensure financial safety.
 
-### Low Risk (Approved)
-The system predicts Low Risk when:
-- Credit History is **1.0 (Good)**.
-- Loan-to-Value (LTV) ratio is **<= 80%**.
-- Monthly EMI is **<= 45%** of total income.
-
-### High Risk (Rejected)
-The system predicts High Risk when:
-- Credit History is **0.0 (Poor)**.
-- Total declared income is **$0**.
-- Debt-to-Income or LTV ratios exceed safe banking thresholds.
+## 🤝 Test Credentials
+- **Email**: `test@example.com`
+- **Password**: `password123`
 
 ---
-Developed with ❤️ by Sashtika
+Developed for secure and intelligent financial assessment.

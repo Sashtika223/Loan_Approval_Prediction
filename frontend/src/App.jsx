@@ -28,7 +28,7 @@ function App() {
     Credit_History: 1.0,
     Property_Area: 'Urban',
   });
-  
+
   const [prediction, setPrediction] = useState(null);
   const [predReason, setPredReason] = useState('');
   const [loading, setLoading] = useState(false);
@@ -44,35 +44,35 @@ function App() {
   }, []);
 
   // --------------- Handlers ---------------
-  
+
   const handleLogin = (e) => {
     e.preventDefault();
     setAuthError('');
-    
+
     const email = authEmail.trim().toLowerCase();
     const password = authPassword.trim();
-    
+
     if (email && password) {
       // First check hardcoded test user
-      if(email === 'test@example.com' && password === 'password123') {
-           const userData = { email: email, name: 'Test User' };
-           localStorage.setItem('user', JSON.stringify(userData));
-           setUser(userData);
-           setCurrentView('loan_application');
-           return;
+      if (email === 'test@example.com' && password === 'password123') {
+        const userData = { email: email, name: 'Test User' };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+        setCurrentView('loan_application');
+        return;
       }
 
       // Then check dynamically registered users
       const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
       const registeredUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
-      
-      if(registeredUser) {
-           const userData = { email: registeredUser.email, name: registeredUser.name };
-           localStorage.setItem('user', JSON.stringify(userData));
-           setUser(userData);
-           setCurrentView('loan_application');
+
+      if (registeredUser) {
+        const userData = { email: registeredUser.email, name: registeredUser.name };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+        setCurrentView('loan_application');
       } else {
-           setAuthError('Invalid credentials! Please check your email and password.');
+        setAuthError('Invalid credentials! Please check your email and password.');
       }
     } else {
       setAuthError('Please fill all fields');
@@ -93,30 +93,30 @@ function App() {
       setAuthError('Passwords do not match');
       return;
     }
-    
+
     if (email && password && name) {
       // Fetch or initialize users list from local storage
       const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-      
+
       // Check if user already exists
       if (users.find(u => u.email.toLowerCase() === email)) {
-          setAuthError('An account with this email already exists.');
-          return;
+        setAuthError('An account with this email already exists.');
+        return;
       }
-      
+
       // Save the newly registered user
       users.push({ name: name, email: email, password: password });
       localStorage.setItem('registeredUsers', JSON.stringify(users));
 
       setAuthSuccess('Registration successful! Redirecting to login...');
       setTimeout(() => {
-         setCurrentView('login');
-         setAuthSuccess('');
-         setAuthError('');
-         // Clear sensitive fields so they only need to type their password again
-         setAuthName('');
-         setAuthPassword('');
-         setAuthConfirmPassword('');
+        setCurrentView('login');
+        setAuthSuccess('');
+        setAuthError('');
+        // Clear sensitive fields so they only need to type their password again
+        setAuthName('');
+        setAuthPassword('');
+        setAuthConfirmPassword('');
       }, 1500);
     } else {
       setAuthError('Please fill all fields');
@@ -146,7 +146,7 @@ function App() {
     setPrediction(null);
     setPredError('');
     setPredReason('');
-    
+
     const dataToSend = {
       ...formData,
       ApplicantIncome: parseFloat(formData.ApplicantIncome),
@@ -172,11 +172,11 @@ function App() {
 
       const data = await response.json();
       setPrediction(data.prediction);
-      
+
       if (data.reason) {
-          setPredReason(data.reason);
+        setPredReason(data.reason);
       }
-      
+
     } catch (err) {
       setPredError(err.message);
     } finally {
@@ -198,7 +198,7 @@ function App() {
             <span className={currentView === 'loan_application' ? 'active-nav' : ''} onClick={() => setCurrentView('loan_application')}>Loan Application</span>
             <span style={{ color: 'var(--text-muted)' }}>|</span>
             <span style={{ color: 'var(--text-muted)' }}>{user.email}</span>
-            <button className="nav-btn" onClick={handleLogout} style={{background: 'transparent', border: '1px solid var(--danger)', color: 'var(--danger)'}}>Log Out</button>
+            <button className="nav-btn" onClick={handleLogout} style={{ background: 'transparent', border: '1px solid var(--danger)', color: 'var(--danger)' }}>Log Out</button>
           </>
         ) : (
           <>
@@ -235,46 +235,46 @@ function App() {
           <h2>Welcome Back</h2>
           <p>Login to submit your personal details for loan prediction.</p>
         </div>
-        
+
         {authError && <div className="error-message">{authError}</div>}
         {authSuccess && <div className="success-message">{authSuccess}</div>}
-        
+
         <form onSubmit={handleLogin} className="auth-form" autoComplete="off">
           {/* Hidden inputs to trick stubborn browser autofill */}
-          <input type="email" name="hidden-email" style={{display: 'none'}} autoComplete="username" />
-          <input type="password" name="hidden-password" style={{display: 'none'}} autoComplete="current-password" />
+          <input type="email" name="hidden-email" style={{ display: 'none' }} autoComplete="username" />
+          <input type="password" name="hidden-password" style={{ display: 'none' }} autoComplete="current-password" />
 
           <div className="form-group">
             <label>Email Address</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               name="user_email_login"
               placeholder="Ex: test@example.com"
-              value={authEmail} 
-              onChange={(e) => setAuthEmail(e.target.value)} 
-              required 
+              value={authEmail}
+              onChange={(e) => setAuthEmail(e.target.value)}
+              required
               autoComplete="nope"
             />
           </div>
-          
+
           <div className="form-group">
             <label>Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               name="user_password_login"
               placeholder="Ex: password123"
-              value={authPassword} 
-              onChange={(e) => setAuthPassword(e.target.value)} 
-              required 
+              value={authPassword}
+              onChange={(e) => setAuthPassword(e.target.value)}
+              required
               autoComplete="new-password"
             />
           </div>
-          
-          <button type="submit" className="btn-large primary-btn" style={{width: '100%', marginTop: '1rem'}}>Secure Login</button>
+
+          <button type="submit" className="btn-large primary-btn" style={{ width: '100%', marginTop: '1rem' }}>Secure Login</button>
         </form>
-        
+
         <div className="auth-footer">
-          <p>Don't have an account? <span onClick={() => setCurrentView('register')} className="text-link" style={{cursor: 'pointer'}}>Register here</span></p>
+          <p>Don't have an account? <span onClick={() => setCurrentView('register')} className="text-link" style={{ cursor: 'pointer' }}>Register here</span></p>
         </div>
       </div>
     </div>
@@ -287,14 +287,14 @@ function App() {
           <h2>Create Account</h2>
           <p>Join us to predict your home loan instantly</p>
         </div>
-        
+
         {authError && <div className="error-message">{authError}</div>}
         {authSuccess && <div className="success-message">{authSuccess}</div>}
-        
+
         <form onSubmit={handleRegister} className="auth-form" autoComplete="off">
           {/* Hidden inputs to trick stubborn browser autofill */}
-          <input type="email" name="hidden-email-reg" style={{display: 'none'}} autoComplete="username" />
-          <input type="password" name="hidden-password-reg" style={{display: 'none'}} autoComplete="current-password" />
+          <input type="email" name="hidden-email-reg" style={{ display: 'none' }} autoComplete="username" />
+          <input type="password" name="hidden-password-reg" style={{ display: 'none' }} autoComplete="current-password" />
 
           <div className="form-group">
             <label>Full Name</label>
@@ -305,7 +305,7 @@ function App() {
             <label>Email Address</label>
             <input type="email" name="user_email_reg" placeholder="Ex: test@example.com" value={authEmail} onChange={(e) => setAuthEmail(e.target.value)} required autoComplete="nope" />
           </div>
-          
+
           <div className="form-group">
             <label>Password</label>
             <input type="password" name="user_password_reg" placeholder="Enter password" value={authPassword} onChange={(e) => setAuthPassword(e.target.value)} required minLength="6" autoComplete="new-password" />
@@ -315,12 +315,12 @@ function App() {
             <label>Confirm Password</label>
             <input type="password" name="user_confirm_password_reg" placeholder="Confirm password" value={authConfirmPassword} onChange={(e) => setAuthConfirmPassword(e.target.value)} required autoComplete="new-password" />
           </div>
-          
-          <button type="submit" className="btn-large primary-btn" style={{width: '100%', marginTop: '1rem'}}>Register</button>
+
+          <button type="submit" className="btn-large primary-btn" style={{ width: '100%', marginTop: '1rem' }}>Register</button>
         </form>
-        
+
         <div className="auth-footer">
-          <p>Already have an account? <span onClick={() => setCurrentView('login')} className="text-link" style={{cursor: 'pointer'}}>Login here</span></p>
+          <p>Already have an account? <span onClick={() => setCurrentView('login')} className="text-link" style={{ cursor: 'pointer' }}>Login here</span></p>
         </div>
       </div>
     </div>
@@ -335,10 +335,10 @@ function App() {
 
       <div className="glass-panel main-panel">
         <form onSubmit={handlePredict}>
-          
+
           {/* Section: Personal Information */}
-          <h3 style={{marginBottom: '1.5rem', color: '#60A5FA', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem'}}>1. Personal Information</h3>
-          <div className="grid" style={{marginBottom: '2rem'}}>
+          <h3 style={{ marginBottom: '1.5rem', color: '#60A5FA', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>1. Personal Information</h3>
+          <div className="grid" style={{ marginBottom: '2rem' }}>
             <div className="form-group">
               <label>Gender</label>
               <select name="Gender" value={formData.Gender} onChange={handleChange}>
@@ -375,8 +375,8 @@ function App() {
           </div>
 
           {/* Section: Financial Details */}
-          <h3 style={{marginBottom: '1.5rem', color: '#60A5FA', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem'}}>2. Financial Details</h3>
-          <div className="grid" style={{marginBottom: '2rem'}}>
+          <h3 style={{ marginBottom: '1.5rem', color: '#60A5FA', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>2. Financial Details</h3>
+          <div className="grid" style={{ marginBottom: '2rem' }}>
             <div className="form-group">
               <label>Are You Self Employed?</label>
               <select name="Self_Employed" value={formData.Self_Employed} onChange={handleChange}>
@@ -394,7 +394,7 @@ function App() {
               <label>Co-Applicant Income (Monthly ₹)</label>
               <input type="number" name="CoapplicantIncome" value={formData.CoapplicantIncome} onChange={handleChange} required />
             </div>
-            
+
             <div className="form-group">
               <label>Credit History Status</label>
               <select name="Credit_History" value={formData.Credit_History} onChange={handleChange}>
@@ -405,15 +405,15 @@ function App() {
           </div>
 
           {/* Section: Loan Details */}
-          <h3 style={{marginBottom: '1.5rem', color: '#60A5FA', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem'}}>3. Loan Details</h3>
+          <h3 style={{ marginBottom: '1.5rem', color: '#60A5FA', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>3. Loan Details</h3>
           <div className="grid">
             <div className="form-group">
               <label>Total Property Value (₹)</label>
               <input type="number" name="Property_Value" value={formData.Property_Value} onChange={handleChange} placeholder="e.g. 200000" required />
             </div>
-            
+
             <div className="form-group">
-              <label>Requested Loan Amount (₹ Thousands)</label>
+              <label>Requested Loan Amount (₹)</label>
               <input type="number" name="LoanAmount" value={formData.LoanAmount} onChange={handleChange} required />
             </div>
 
@@ -444,9 +444,9 @@ function App() {
             <h2>{prediction === 'Low Risk' ? '🎉 Analysis: Low Risk' : '❌ Analysis: High Risk'}</h2>
             <p>
               {predReason ? predReason :
-               (prediction === 'Low Risk'
-                ? 'Congratulations! According to our analysis, your current personal and financial details present a low-risk profile for this loan.' 
-                : 'Unfortunately, your profile characteristics indicate poor eligibility based on the requested loan amount and financial guidelines.')}
+                (prediction === 'Low Risk'
+                  ? 'Congratulations! According to our analysis, your current personal and financial details present a low-risk profile for this loan.'
+                  : 'Unfortunately, your profile characteristics indicate poor eligibility based on the requested loan amount and financial guidelines.')}
             </p>
           </div>
         )}
@@ -458,16 +458,16 @@ function App() {
   return (
     <>
       <Navigation />
-      
+
       {/* Dynamic Background Effects */}
       <div className="bg-blob blob-1"></div>
       <div className="bg-blob blob-2"></div>
-      
+
       {currentView === 'home' && renderHome()}
       {currentView === 'login' && renderLogin()}
       {currentView === 'register' && renderRegister()}
       {currentView === 'loan_application' && renderLoanApplication()}
-      
+
       <footer>
         <p>&copy; 2026 Home Loan Predictor. All rights reserved.</p>
       </footer>
